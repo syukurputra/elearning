@@ -1,5 +1,5 @@
-const app = require('./app')
-require('./connection');
+const app = require('./src/app')
+require('./src/connection');
 
 async function init() {
     await app.listen(8080);
