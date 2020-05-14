@@ -1,6 +1,8 @@
 const mongoose = require("mongoose")
 
-mongoose.connect("mongodb+srv://syukur:syukur123@cluster0-y2qoe.gcp.mongodb.net/elearning?retryWrites=true&w=majority", {
+const db = process.env.MONGODB_URL;
+
+mongoose.connect(db, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true
