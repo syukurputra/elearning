@@ -7,6 +7,8 @@ const verifyToken = require('./verifyToken')
 const jwt = require('jsonwebtoken')
 const config = require('../config')
 
+const productController = require('../controllers/productController')
+
 router.post('/signup', async(req, res) => {
     try{
         const {username, email, password} = req.body;
@@ -25,9 +27,18 @@ router.post('/signup', async(req, res) => {
         res.status(200).json({ auth: true, token });
     } catch (e) {
         console.log(e)
-        res.status(500).send('There was a problem signin');
+        res.status(500).send('There was a problem registering your user');
     }
 });
+
+router.route('/products')
+    .get(productController.index)
+    .post(productController.new)
+
+router.route('/product/:id')
+    .get(productController.view)
+    .put(productController.update)
+    .delete(productController.delete)
 
 router.post('/signin', async(req, res) => {
     try {
