@@ -11,23 +11,29 @@ const productController = require('../controllers/productController')
 
 router.post('/signup', async(req, res) => {
     try{
-        const {username, email, password} = req.body;
+        const {fullName, email, password} = req.body;
 
         const user = new User({
-            username,
+            fullName,
             email,
             password
         });
         user.password = await user.encryptPassword(password);
-        await user.save();
 
-        const token = jwt.sign({ id: user.id }, config.secret, {
+        const userMaster = await User.findOne({ email: req.body.email })
+        if (userMaster) {
+            res.status(409).send({ auth: false, message: 'This email is already registered'})
+        } else {
+            await user.save();    
+            
+            const token = jwt.sign({ id: user.id }, config.secret, {
                 expiresIn: '24h'
-        });
-        res.status(200).json({ auth: true, token });
+            });
+            res.status(200).json({ auth: true, token });
+        }
     } catch (e) {
         console.log(e)
-        res.status(500).send('There was a problem registering your user');
+        res.status(500).send({message : 'There was a problem registering your user'});
     }
 });
 
@@ -48,7 +54,7 @@ router.post('/signin', async(req, res) => {
         }
         const validPassword = await user.validatePassword(req.body.password, user.password);
         if(!validPassword) {
-            return res.status(401).send({ auth: false, token: null });
+            return res.status(401).send({ auth: false, token: null, message: 'Unauthorized'});
         }
         const token = jwt.sign({ id: user.id }, config.secret, {
             expiresIn: '24h'
@@ -56,8 +62,12 @@ router.post('/signin', async(req, res) => {
         res.status(200).json({ auth: true, token });
     } catch (e) {
         console.log(e)
-        res.status(500).send('There was a problem signin');
+        res.status(500).send({message : 'There was a problem signin'});
     }
+});
+
+router.get('/dashboard', (req, res) => {
+    res.json('dashboard');
 });
 
 router.get('/logout', function(req, res) {
