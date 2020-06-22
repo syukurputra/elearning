@@ -20,6 +20,8 @@ exports.new = function(req, res) {
     product.name = req.body.name
     product.price = req.body.price
     product.stock = req.body.stock
+    product.rating = req.body.rating
+    product.totalSale = req.body.totalSale
     product.save(function(err) {
         if (err) {
             res.json({
@@ -67,6 +69,8 @@ exports.update = function(req, res) {
         product.name = req.body.name
         product.price = req.body.price
         product.stock = req.body.stock
+        product.rating = req.body.rating
+        product.totalSale = req.body.totalSale
         product.save(function(err) {
             if (err)
                 res.json({

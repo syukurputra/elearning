@@ -6,12 +6,12 @@ var PORT = process.env.PORT || 8080;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false}))
 
-app.use(require('./src/controllers/authController'))
+// app.use(require('./src/controllers/authController'))
+app.use(require('./src/routes/routes'))
 
 const mongoose = require("mongoose")
 
-// const db = process.env.MONGODB_URL;
-const db = "mongodb+srv://syukur:syukur123@cluster0-y2qoe.gcp.mongodb.net/elearning?retryWrites=true&w=majority";
+const db = "mongodb+srv://syukur:syukur123@pasarsegar-ew3pq.mongodb.net/pasarsegar?retryWrites=true&w=majority";
 
 mongoose.connect(db, {
     useNewUrlParser: true,

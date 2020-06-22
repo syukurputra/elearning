@@ -1,5 +1,7 @@
 let mongoose = require('mongoose')
+require('mongoose-double')(mongoose);
 
+var SchemaTypes = mongoose.Schema.Types;
 let productSchema = mongoose.Schema({
     name: {
         type: String,
@@ -7,6 +9,10 @@ let productSchema = mongoose.Schema({
     },
     price: Number,
     stock: Number,
+    totalSale: Number,
+    rating: {
+        type: SchemaTypes.Double
+    },
     create: {
         type: Date,
         default: Date.now
